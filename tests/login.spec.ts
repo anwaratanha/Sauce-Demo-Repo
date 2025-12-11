@@ -1,0 +1,56 @@
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../pages/login.page";
+import { InventoryPage } from "../pages/inventory.page";
+import { testData } from "../utils/testData";
+import { AddToCart } from "../pages/addToCart.page";
+import { Product} from "../pages/productDetails.page";
+
+
+test("Login with invalid user", async ({ page }) => {
+  const login = new LoginPage(page);
+  const inventory = new InventoryPage(page);
+  await login.gotoLoginPage(testData.URL);
+  await login.login(
+    testData.invalidUser.username,
+    testData.invalidUser.password
+  );
+  //expect(await page.screenshot()).toMatchSnapshot('loginfailed.png');
+ // await inventory.verifyInventoryPage();
+  await login.verifyErrorMessage(
+    "Epic sadface: Username and password do not match any user in this service"
+  );
+});
+
+test("Login with valid user", async ({ page }) => {
+  const login = new LoginPage(page);
+  const inventory = new InventoryPage(page);
+  await login.gotoLoginPage(testData.URL);
+  await login.login(testData.validUser.username, testData.validUser.password);
+  await inventory.verifyInventoryPage();
+  await inventory.checkTheVisibilty('//span[@data-test="title"]', "Products");
+});
+
+test("Add a product to cart", async ({ page }) => {
+  const login = new LoginPage(page);
+  const inventory = new InventoryPage(page);
+  const cart = new AddToCart(page);
+
+  await login.gotoLoginPage(testData.URL);
+  await login.login(testData.validUser.username, testData.validUser.password);
+  await cart.selectProduct();
+  await cart.verifyAddToCart('Remove')
+});
+
+test("Navigate Product Details Page", async ({ page }) => {
+  const login = new LoginPage(page);
+  const inventory = new InventoryPage(page);
+  const product = new Product(page);
+
+  await login.gotoLoginPage(testData.URL);
+  await login.login(testData.validUser.username, testData.validUser.password);
+  await product.navigateProductPage();
+  await product.verifyProductPage('Back to products');
+  await product.verifyAddToCartInProductPage();
+  await product.verifyRemoveButtonInProductPage('Remove')
+
+});
