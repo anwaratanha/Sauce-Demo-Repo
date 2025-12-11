@@ -54,3 +54,10 @@ test("Navigate Product Details Page", async ({ page }) => {
   await product.verifyRemoveButtonInProductPage('Remove')
 
 });
+
+test("Navigate to URL", async ({ page }) => {
+  const login = new LoginPage(page);
+  const inventory = new InventoryPage(page);
+  const product = new Product(page);
+  await login.gotoLoginPage(testData.URL);
+});
