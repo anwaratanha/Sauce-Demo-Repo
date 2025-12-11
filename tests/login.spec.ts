@@ -59,5 +59,5 @@ test("Navigate to URL", async ({ page }) => {
   const login = new LoginPage(page);
   const inventory = new InventoryPage(page);
   const product = new Product(page);
-  await login.gotoLoginPage(testData.URL);
+  await login.gotoLoginPage(testData.URL)2;
 });
