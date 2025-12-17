@@ -60,9 +60,9 @@ test("Navigate to URL", async ({ page }) => {
   const inventory = new InventoryPage(page);
   const product = new Product(page);
 <<<<<<< HEAD
-  await login.gotoLoginPage(testData.URL)1;
+  await login.gotoLoginPage(testData.URL) 1;
 });
 =======
-  await login.gotoLoginPage(testData.URL)2;
+  await login.gotoLoginPage('www.facebook.com');
 });
 >>>>>>> testNB
